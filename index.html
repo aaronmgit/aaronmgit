@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="es">
 <head>
@@ -116,9 +115,106 @@
       box-shadow:inset 0 -2px 6px rgba(0,0,0,0.02);
     }
 
-    @media (prefers-reduced-motion: reduce){
-      #greeting{transition:none}
-    }
+/* Añadido: estilos para el conejo rosa flotante y su bocadillo */
+.rabbit{
+  position:fixed;
+  right:1.5rem;
+  bottom:1.5rem;
+  width:96px;
+  height:120px;
+  z-index:60;
+  pointer-events:none; /* no interfiere con clicks */
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  transform-origin:center;
+  animation: floaty 4s ease-in-out infinite;
+}
+.rabbit.paused{ animation-play-state:paused; }
+
+.rabbit .sprite{
+  width:76px;
+  height:92px;
+  position:relative;
+  display:block;
+}
+.rabbit .ear{
+  position:absolute;
+  top:-18px;
+  width:18px;
+  height:36px;
+  background:#ffb6d5;
+  border-radius:10px 10px 8px 8px;
+  box-shadow:inset 0 -4px 6px rgba(0,0,0,0.06);
+}
+.rabbit .ear.left{ left:6px; transform:rotate(-14deg); }
+.rabbit .ear.right{ right:6px; transform:rotate(12deg); }
+
+.rabbit .head{
+  position:absolute;
+  top:6px;
+  left:50%;
+  transform:translateX(-50%);
+  width:68px;
+  height:68px;
+  background:#ff7fb3;
+  border-radius:50%;
+  box-shadow:0 8px 18px rgba(0,0,0,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.rabbit .face{
+  color:white;
+  font-weight:700;
+  font-size:14px;
+  user-select:none;
+}
+
+.bubble{
+  position:absolute;
+  left:-160px;
+  bottom:64px;
+  background:#fff;
+  color:#222;
+  padding:.45rem .65rem;
+  border-radius:10px;
+  box-shadow:0 8px 22px rgba(2,6,23,0.08);
+  border:1px solid rgba(2,6,23,0.04);
+  opacity:0;
+  transform:translateY(6px) scale(.98);
+  transition:opacity .18s ease,transform .18s ease;
+  pointer-events:auto;
+  width:150px;
+  font-weight:700;
+  font-size:.9rem;
+}
+.bubble.visible{ opacity:1; transform:none; }
+
+/* pequeño triángulo */
+.bubble::after{
+  content:"";
+  position:absolute;
+  right:14px;
+  bottom:-8px;
+  width:0;height:0;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:8px solid #fff;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.06));
+}
+
+/* animación flotante */
+@keyframes floaty{
+  0%{ transform: translateY(0) rotate(-1deg) }
+  50%{ transform: translateY(-10px) rotate(1deg) }
+  100%{ transform: translateY(0) rotate(-1deg) }
+}
+
+@media (prefers-reduced-motion: reduce){
+  #greeting{transition:none}
+  .rabbit{ animation:none }
+}
   </style>
 </head>
 <body>
@@ -145,6 +241,16 @@
     </div>
   </main>
 
+  <!-- Añadido: sprite del conejo flotante -->
+  <div id="rabbit" class="rabbit" aria-hidden="false" aria-live="polite">
+    <div class="sprite" aria-hidden="true">
+      <div class="ear left"></div>
+      <div class="ear right"></div>
+      <div class="head"><span class="face">🐰</span></div>
+    </div>
+    <div class="bubble" role="status" aria-atomic="true"><span class="bubble-text"></span></div>
+  </div>
+
   <script>
     const btn = document.getElementById('showBtn');
     const resetBtn = document.getElementById('resetBtn');
@@ -165,6 +271,9 @@
 
       // Pequeña animación "pulse" usando transform temporal
       out.animate([{ transform: 'translateY(-4px) scale(1.02)' }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.9,.3,1)' });
+
+      // Pausar el conejo un momento y mostrar mensaje alternativo
+      if (window.pauseRabbitForClick) pauseRabbitForClick();
     }
 
     btn.addEventListener('click', showGreeting);
@@ -187,6 +296,50 @@
 
     // Inicializar contador (por si quieres persistir en el futuro)
     updateCounter();
+  </script>
+  <script>
+    // Añadido: lógica del conejo parlante
+    (function(){
+      const rabbit = document.getElementById('rabbit');
+      const bubbleText = rabbit.querySelector('.bubble-text');
+      const bubble = rabbit.querySelector('.bubble');
+      let intervalId = null;
+      let speakingTimeout = null;
+
+      function speak(text, duration = 1200){
+        bubbleText.textContent = text;
+        bubble.classList.add('visible');
+        clearTimeout(speakingTimeout);
+        speakingTimeout = setTimeout(()=> bubble.classList.remove('visible'), duration);
+      }
+
+      function startRepeating(){
+        // decir "llego tarde" periódicamente
+        if (intervalId) clearInterval(intervalId);
+        speak('llego tarde', 1100);
+        intervalId = setInterval(()=> {
+          speak('llego tarde', 1100);
+        }, 1700);
+      }
+
+      function pauseAndSayOnce(msg = 'tu tambien llegas tarde', ms = 1400){
+        // pausa la animación y habla el mensaje una vez, luego reanuda
+        if (intervalId) { clearInterval(intervalId); intervalId = null; }
+        rabbit.classList.add('paused');
+        speak(msg, ms - 100);
+        setTimeout(()=> {
+          rabbit.classList.remove('paused');
+          startRepeating();
+        }, ms);
+      }
+
+      // Exponer función global para que showGreeting la invoque
+      window.pauseRabbitForClick = () => pauseAndSayOnce('tu tambien llegas tarde', 1500);
+
+      // Iniciar ciclo si el usuario no ha solicitado reducir movimiento
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduce) startRepeating();
+    })();
   </script>
 </body>
 </html>

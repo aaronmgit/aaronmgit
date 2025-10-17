@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Página oculta — Conejos flotantes</title>
+  <style>
+    :root{
+      --bg:#0f172a;
+      --card:#0b1220;
+      --muted:#94a3b8;
+      --bubble:#fff;
+      --rabbit-pink:#ff7fb3;
+      --rabbit-pink2:#ffb6d5;
+      --clicked:#8be38b;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:
+      radial-gradient(800px 300px at 10% 10%, rgba(99,102,241,0.08), transparent),
+      linear-gradient(180deg,#071025 0%, #07162a 100%);color:#e6eef8}
+    .stage{position:fixed;inset:0;overflow:hidden}
+
+    .rabbit{
+      position:absolute;
+      width:96px;height:120px;
+      display:flex;align-items:flex-end;justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      --speed:4s;
+      animation: floaty var(--speed) ease-in-out infinite;
+      transition:transform .35s ease, filter .25s ease, opacity .25s ease;
+      will-change:transform;
+    }
+
+    .rabbit .sprite{ position:relative; width:76px; height:92px; }
+    .rabbit .ear{
+      position:absolute; top:-18px; width:18px; height:36px;
+      background:var(--rabbit-pink2); border-radius:10px 10px 8px 8px;
+      box-shadow:inset 0 -4px 6px rgba(0,0,0,0.06);
+    }
+    .rabbit .ear.left{ left:6px; transform:rotate(-14deg) }
+    .rabbit .ear.right{ right:6px; transform:rotate(12deg) }
+    .rabbit .head{
+      position:absolute; top:6px; left:50%; transform:translateX(-50%);
+      width:68px;height:68px;border-radius:50%;
+      background:var(--rabbit-pink); display:flex;align-items:center;justify-content:center;
+      box-shadow:0 8px 18px rgba(0,0,0,0.22);
+      transition:background .28s ease, transform .18s ease;
+    }
+    .rabbit .face{ font-size:22px; filter:drop-shadow(0 1px 0 rgba(0,0,0,0.25)) }
+
+    .bubble{
+      position:absolute; left:-160px; bottom:64px; width:150px;
+      padding:.45rem .6rem; border-radius:10px; background:var(--bubble); color:#111;
+      font-weight:700; font-size:.92rem; box-shadow:0 8px 22px rgba(2,6,23,0.12);
+      transform:translateY(6px) scale(.98); opacity:0.98;
+    }
+
+    /* visual states */
+    .rabbit.clicked .head{ background:var(--clicked); transform:scale(.98) rotate(-6deg) }
+    .rabbit.singular .head{ box-shadow:0 12px 30px rgba(255,127,179,0.18); transform:translateY(-2px) }
+
+    /* destacar claramente el conejo singular */
+    .rabbit.singular .bubble{
+      background: #fff0f6;
+      color: #9b1f5a;
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 18px 40px rgba(155,31,90,0.14);
+      border: 1px solid rgba(155,31,90,0.08);
+    }
+    .rabbit.singular .head{ transform: translateY(-4px) scale(1.04); }
+
+    @keyframes floaty{
+      0%{ transform: translateY(0) rotate(-1deg) }
+      50%{ transform: translateY(-12px) rotate(2deg) }
+      100%{ transform: translateY(0) rotate(-1deg) }
+    }
+
+    /* layout positions for 5 rabbits */
+    .r1{ top:8%; left:10%; --speed:3s }
+    .r2{ top:18%; right:8%; --speed:4.2s }
+    .r3{ top:45%; left:42%; --speed:2.6s }
+    .r4{ bottom:14%; left:6%; --speed:5s }
+    .r5{ bottom:10%; right:12%; --speed:3.6s }
+
+    /* reduced motion respect */
+    @media (prefers-reduced-motion: reduce){
+      .rabbit{ animation:none }
+    }
+
+    /* small helper to make bubbles readable on dark bg */
+    .bubble{ background: #fff; border:1px solid rgba(2,6,23,0.06) }
+  </style>
+</head>
+<body>
+  <div class="stage" aria-hidden="false" aria-label="Escena con conejos flotantes">
+    <div class="rabbit r1" data-index="0" role="button" tabindex="0" aria-pressed="false">
+      <div class="sprite" aria-hidden="true">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="head"><span class="face">🐰</span></div>
+      </div>
+      <div class="bubble" aria-live="polite"><span class="bubble-text"></span></div>
+    </div>
+
+    <div class="rabbit r2" data-index="1" role="button" tabindex="0" aria-pressed="false">
+      <div class="sprite" aria-hidden="true">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="head"><span class="face">🐇</span></div>
+      </div>
+      <div class="bubble" aria-live="polite"><span class="bubble-text"></span></div>
+    </div>
+
+    <div class="rabbit r3" data-index="2" role="button" tabindex="0" aria-pressed="false">
+      <div class="sprite" aria-hidden="true">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="head"><span class="face">🐰</span></div>
+      </div>
+      <div class="bubble" aria-live="polite"><span class="bubble-text"></span></div>
+    </div>
+
+    <div class="rabbit r4" data-index="3" role="button" tabindex="0" aria-pressed="false">
+      <div class="sprite" aria-hidden="true">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="head"><span class="face">🐇</span></div>
+      </div>
+      <div class="bubble" aria-live="polite"><span class="bubble-text"></span></div>
+    </div>
+
+    <div class="rabbit r5" data-index="4" role="button" tabindex="0" aria-pressed="false">
+      <div class="sprite" aria-hidden="true">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="head"><span class="face">🐰</span></div>
+      </div>
+      <div class="bubble" aria-live="polite"><span class="bubble-text"></span></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const rabbits = Array.from(document.querySelectorAll('.rabbit'));
+      // initial: all "llegas tarde" except one "llego tarde"
+      // opción: elegir aleatorio al cargar
+      let singularIndex = Math.floor(Math.random() * rabbits.length);
+       function renderAll(){
+         rabbits.forEach((r, i) => {
+          const text = (i === singularIndex) ? 'llego tarde (único)' : 'llegas tarde';
+           r.querySelector('.bubble-text').textContent = text;
+           r.dataset.singular = (i === singularIndex) ? 'true' : 'false';
+           r.classList.toggle('singular', i === singularIndex);
+           r.classList.remove('clicked');
+           r.setAttribute('aria-pressed', 'false');
+         });
+       }
+      renderAll();
+
+      function pickOther(exclude){
+        const others = rabbits.filter((_,i) => i !== exclude);
+        return Math.floor(Math.random() * others.length);
+      }
+
+      function moveSingular(fromIndex){
+        // clicked rabbit becomes plural and briefly marked
+        const clicked = rabbits[fromIndex];
+        clicked.classList.add('clicked');
+        clicked.setAttribute('aria-pressed','true');
+        // set clicked to plural
+        clicked.querySelector('.bubble-text').textContent = 'llegas tarde';
+        clicked.dataset.singular = 'false';
+        clicked.classList.remove('singular');
+
+        // pick a new rabbit to become singular (choose from others)
+        const otherIndices = rabbits.map((_,i)=>i).filter(i=>i!==fromIndex);
+        const newIndex = otherIndices[Math.floor(Math.random()*otherIndices.length)];
+        singularIndex = newIndex;
+
+        // update new singular after tiny delay so users see the transition
+        setTimeout(() => {
+          rabbits[newIndex].querySelector('.bubble-text').textContent = 'llego tarde';
+          rabbits[newIndex].dataset.singular = 'true';
+          rabbits[newIndex].classList.add('singular');
+        }, 220);
+
+        // remove clicked highlight after a short time
+        setTimeout(() => clicked.classList.remove('clicked'), 700);
+      }
+
+      // click / keyboard handlers
+      rabbits.forEach((r, i) => {
+        r.addEventListener('click', () => {
+          if (r.dataset.singular === 'true') {
+            moveSingular(i);
+          }
+        });
+        r.addEventListener('keydown', (e) => {
+          if ((e.key === 'Enter' || e.key === ' ') && r.dataset.singular === 'true') {
+            e.preventDefault();
+            moveSingular(i);
+          }
+        });
+      });
+
+      // Optional: make them speak periodically (subtle)
+      let talkTimer = setInterval(()=> {
+        // pick a visible rabbit to flash its bubble text opacity for brief "speak"
+        const idx = Math.floor(Math.random()*rabbits.length);
+        const b = rabbits[idx].querySelector('.bubble');
+        b.style.transition = 'transform .12s ease,opacity .12s ease';
+        b.style.transform = 'translateY(-4px) scale(1.02)';
+        b.style.opacity = '1';
+        setTimeout(()=> { b.style.transform=''; b.style.opacity='0.98' }, 180);
+      }, 900);
+
+      // clean up on unload
+      window.addEventListener('beforeunload', ()=> clearInterval(talkTimer));
+    })();
+  </script>
+</body>
+</html>

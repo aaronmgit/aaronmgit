@@ -225,10 +225,29 @@
   #greeting{transition:none}
   /* detener la animación del sprite si se prefiere movimiento reducido */
   .rabbit .sprite{ animation:none }
-}
+    /* enlace en la esquina superior izquierda */
+    .corner-link{
+      position:fixed;
+      top:0.6rem;
+      left:0.6rem;
+      z-index:90;
+      background:rgba(255,255,255,0.98);
+      color:var(--accent-2);
+      padding:.4rem .7rem;
+      border-radius:8px;
+      font-weight:700;
+      text-decoration:none;
+      box-shadow:0 8px 20px rgba(2,6,23,0.06);
+      border:1px solid rgba(15,23,42,0.04);
+      transition:transform .12s ease,opacity .12s ease;
+      pointer-events:auto;
+    }
+    .corner-link:active{ transform:translateY(1px) }
+    @media (max-width:420px){ .corner-link{ padding:.3rem .5rem; font-size:.9rem } }
   </style>
 </head>
 <body>
+  <a href="paginaoculta.html" class="corner-link" aria-label="Ir a la página oculta">Pincha aqui o no</a>
   <main class="card" aria-labelledby="title">
     <header>
       <div class="logo" aria-hidden="true">Hi</div>

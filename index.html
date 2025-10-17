@@ -128,16 +128,26 @@
   align-items:flex-end;
   justify-content:center;
   transform-origin:center;
-  animation: floaty 4s ease-in-out infinite;
+  transition:transform .45s ease; /* para la rotación al reiniciar */
 }
-.rabbit.paused{ animation-play-state:paused; }
+/* rotar 90 grados al reiniciar */
+.rabbit.rotated{ transform: rotate(90deg); }
+
+/* cambiar color cuando llegue a 10 */
+.rabbit.color-change .head{ background:#a78bfa; }   /* tono lila */
+.rabbit.color-change .ear{ background:#f3c4ff; }    /* tono más claro */
 
 .rabbit .sprite{
   width:76px;
   height:92px;
   position:relative;
   display:block;
+  /* animación flotante ahora en el sprite para poder rotar el contenedor */
+  animation: floaty 4s ease-in-out infinite;
 }
+/* pausar la animación del sprite cuando se marque paused en el contenedor */
+.rabbit.paused .sprite{ animation-play-state:paused; }
+
 .rabbit .ear{
   position:absolute;
   top:-18px;
@@ -213,7 +223,8 @@
 
 @media (prefers-reduced-motion: reduce){
   #greeting{transition:none}
-  .rabbit{ animation:none }
+  /* detener la animación del sprite si se prefiere movimiento reducido */
+  .rabbit .sprite{ animation:none }
 }
   </style>
 </head>
@@ -256,6 +267,7 @@
     const resetBtn = document.getElementById('resetBtn');
     const out = document.getElementById('greeting');
     const counterEl = document.getElementById('counter');
+    const rabbit = document.getElementById('rabbit'); // añadido: referencia al conejo
 
     let count = 0;
 
@@ -271,6 +283,11 @@
 
       // Pequeña animación "pulse" usando transform temporal
       out.animate([{ transform: 'translateY(-4px) scale(1.02)' }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.9,.3,1)' });
+
+      // Cambia color cuando llegue a 10
+      if (count === 10) {
+        rabbit.classList.add('color-change');
+      }
 
       // Pausar el conejo un momento y mostrar mensaje alternativo
       if (window.pauseRabbitForClick) pauseRabbitForClick();
@@ -291,6 +308,13 @@
       updateCounter();
       out.textContent = '';
       out.classList.remove('visible');
+
+      // Al reiniciar, girar el conejo 90 grados y quitar el cambio de color
+      rabbit.classList.remove('color-change');
+      rabbit.classList.add('rotated');
+      // eliminar la clase rotated tras la animación
+      setTimeout(() => rabbit.classList.remove('rotated'), 700);
+
       btn.focus();
     });
 

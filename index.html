@@ -4,24 +4,35 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Hello World</title>
+
+  <!-- Tipografías estilo cuento / naïf -->
+  <link href="https://fonts.googleapis.com/css2?family=Alice&family=Amatic+SC:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#f7fbff;
+      /* paleta pastel "Alicia" */
+      --bg:#fff7fb;
+      --paper:#fffdf6;
       --card:#ffffff;
-      --accent:#2563eb;
-      --accent-2:#7c3aed;
+      --accent:#7c3aed;    /* lavanda */
+      --accent-2:#f472b6;  /* rosa té */
+      --mint:#8be9c6;
+      --gold:#ffd27f;
       --muted:#6b7280;
-      --text:#0f172a;
-      --glass: rgba(255,255,255,0.6);
+      --text:#172031;
+      --glass: rgba(255,255,255,0.7);
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background:radial-gradient(1200px 400px at 10% 10%, rgba(99,102,241,0.08), transparent),
-                 radial-gradient(900px 300px at 90% 90%, rgba(37,99,235,0.06), transparent),
-                 var(--bg);
+      font-family:"Quicksand",Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:
+        radial-gradient(600px 200px at 10% 12%, rgba(124,58,237,0.04), transparent),
+        radial-gradient(500px 180px at 88% 85%, rgba(244,114,182,0.03), transparent),
+        repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 14px),
+        var(--bg);
       color:var(--text);
       min-height:100vh;
       display:flex;
@@ -29,16 +40,19 @@
       justify-content:center;
       padding:2rem;
     }
+
     .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.9), var(--card));
+      background:linear-gradient(180deg, rgba(255,255,255,0.92), var(--paper));
       padding:2rem;
-      border-radius:14px;
-      box-shadow:0 10px 30px rgba(2,6,23,0.08);
+      border-radius:18px;
+      box-shadow:0 18px 40px rgba(17,24,39,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
       width:100%;
-      max-width:520px;
+      max-width:560px;
       text-align:center;
-      border:1px solid rgba(15,23,42,0.04);
+      border:1px dashed rgba(124,58,237,0.08);
+      transform: rotate(-0.7deg);
     }
+
     header{
       display:flex;
       gap:12px;
@@ -47,19 +61,22 @@
       margin-bottom:.75rem;
     }
     .logo{
-      width:48px;
-      height:48px;
-      border-radius:10px;
-      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      width:56px;
+      height:56px;
+      border-radius:12px;
+      background: linear-gradient(135deg,var(--accent-2),var(--accent));
       display:flex;
       align-items:center;
       justify-content:center;
       color:white;
       font-weight:700;
-      box-shadow:0 6px 24px rgba(37,99,235,0.12);
+      font-family:"Amatic SC","Alice",serif;
+      box-shadow: 0 10px 30px rgba(124,58,237,0.12);
+      font-size:22px;
     }
-    h1{margin:0;font-size:1.375rem}
-    p{margin:.25rem 0 1rem;color:var(--muted)}
+    h1{margin:0;font-size:1.6rem;color:var(--accent); font-family:"Amatic SC","Alice",serif}
+    p{margin:.25rem 0 1rem;color:var(--muted); font-size:.95rem}
+
     .controls{
       display:flex;
       gap:.75rem;
@@ -68,25 +85,26 @@
       flex-wrap:wrap;
     }
     button{
-      background:linear-gradient(180deg,var(--accent),#1d4ed8);
+      background:linear-gradient(180deg,var(--accent),#5b21b6);
       color:#fff;
       border:0;
       padding:.65rem 1.1rem;
-      border-radius:10px;
+      border-radius:12px;
       cursor:pointer;
       font-weight:700;
       letter-spacing:.2px;
-      box-shadow:0 6px 18px rgba(37,99,235,0.14);
+      box-shadow:0 8px 20px rgba(124,58,237,0.12);
       transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease;
     }
     button:active{transform:translateY(1px)}
     button.secondary{
       background:transparent;
       color:var(--accent);
-      border:1px solid rgba(37,99,235,0.12);
+      border:1px solid rgba(124,58,237,0.12);
       box-shadow:none;
       font-weight:600;
     }
+
     #greeting{
       margin-top:1rem;
       font-size:1.125rem;
@@ -96,6 +114,7 @@
       min-height:1.4em;
     }
     #greeting.visible{opacity:1;transform:translateY(0) scale(1)}
+
     .meta{
       margin-top:.75rem;
       color:var(--muted);
@@ -115,139 +134,131 @@
       box-shadow:inset 0 -2px 6px rgba(0,0,0,0.02);
     }
 
-/* Añadido: estilos para el conejo rosa flotante y su bocadillo */
-.rabbit{
-  position:fixed;
-  right:1.5rem;
-  bottom:1.5rem;
-  width:96px;
-  height:120px;
-  z-index:60;
-  pointer-events:none; /* no interfiere con clicks */
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-  transform-origin:center;
-  transition:transform .45s ease; /* para la rotación al reiniciar */
-}
-/* rotar 90 grados al reiniciar */
-.rabbit.rotated{ transform: rotate(90deg); }
-
-/* cambiar color cuando llegue a 10 */
-.rabbit.color-change .head{ background:#a78bfa; }   /* tono lila */
-.rabbit.color-change .ear{ background:#f3c4ff; }    /* tono más claro */
-
-.rabbit .sprite{
-  width:76px;
-  height:92px;
-  position:relative;
-  display:block;
-  /* animación flotante ahora en el sprite para poder rotar el contenedor */
-  animation: floaty 4s ease-in-out infinite;
-}
-/* pausar la animación del sprite cuando se marque paused en el contenedor */
-.rabbit.paused .sprite{ animation-play-state:paused; }
-
-.rabbit .ear{
-  position:absolute;
-  top:-18px;
-  width:18px;
-  height:36px;
-  background:#ffb6d5;
-  border-radius:10px 10px 8px 8px;
-  box-shadow:inset 0 -4px 6px rgba(0,0,0,0.06);
-}
-.rabbit .ear.left{ left:6px; transform:rotate(-14deg); }
-.rabbit .ear.right{ right:6px; transform:rotate(12deg); }
-
-.rabbit .head{
-  position:absolute;
-  top:6px;
-  left:50%;
-  transform:translateX(-50%);
-  width:68px;
-  height:68px;
-  background:#ff7fb3;
-  border-radius:50%;
-  box-shadow:0 8px 18px rgba(0,0,0,0.08);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.rabbit .face{
-  color:white;
-  font-weight:700;
-  font-size:14px;
-  user-select:none;
-}
-
-.bubble{
-  position:absolute;
-  left:-160px;
-  bottom:64px;
-  background:#fff;
-  color:#222;
-  padding:.45rem .65rem;
-  border-radius:10px;
-  box-shadow:0 8px 22px rgba(2,6,23,0.08);
-  border:1px solid rgba(2,6,23,0.04);
-  opacity:0;
-  transform:translateY(6px) scale(.98);
-  transition:opacity .18s ease,transform .18s ease;
-  pointer-events:auto;
-  width:150px;
-  font-weight:700;
-  font-size:.9rem;
-}
-.bubble.visible{ opacity:1; transform:none; }
-
-/* pequeño triángulo */
-.bubble::after{
-  content:"";
-  position:absolute;
-  right:14px;
-  bottom:-8px;
-  width:0;height:0;
-  border-left:8px solid transparent;
-  border-right:8px solid transparent;
-  border-top:8px solid #fff;
-  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.06));
-}
-
-/* animación flotante */
-@keyframes floaty{
-  0%{ transform: translateY(0) rotate(-1deg) }
-  50%{ transform: translateY(-10px) rotate(1deg) }
-  100%{ transform: translateY(0) rotate(-1deg) }
-}
-
-@media (prefers-reduced-motion: reduce){
-  #greeting{transition:none}
-  /* detener la animación del sprite si se prefiere movimiento reducido */
-  .rabbit .sprite{ animation:none }
-    /* enlace en la esquina superior izquierda */
-    .corner-link{
+    /* Conejo flotante estilo naïf */
+    .rabbit{
       position:fixed;
-      top:0.6rem;
-      left:0.6rem;
-      z-index:90;
-      background:rgba(255,255,255,0.98);
-      color:var(--accent-2);
-      padding:.4rem .7rem;
-      border-radius:8px;
-      font-weight:700;
-      text-decoration:none;
-      box-shadow:0 8px 20px rgba(2,6,23,0.06);
-      border:1px solid rgba(15,23,42,0.04);
-      transition:transform .12s ease,opacity .12s ease;
-      pointer-events:auto;
+      right:1.5rem;
+      bottom:1.5rem;
+      width:96px;
+      height:120px;
+      z-index:60;
+      pointer-events:none;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      transform-origin:center;
+      transition:transform .45s ease;
     }
-    .corner-link:active{ transform:translateY(1px) }
-    @media (max-width:420px){ .corner-link{ padding:.3rem .5rem; font-size:.9rem } }
+    .rabbit.rotated{ transform: rotate(90deg); }
+    .rabbit.color-change .head{ background:#a78bfa; }
+    .rabbit.color-change .ear{ background:#f3c4ff; }
+
+    .rabbit .sprite{
+      width:76px;
+      height:92px;
+      position:relative;
+      display:block;
+      animation: floaty 4s ease-in-out infinite;
+    }
+    .rabbit.paused .sprite{ animation-play-state:paused; }
+
+    .rabbit .ear{
+      position:absolute;
+      top:-18px;
+      width:18px;
+      height:36px;
+      background:#ffb6d5;
+      border-radius:10px 10px 8px 8px;
+      box-shadow:inset 0 -4px 6px rgba(0,0,0,0.06);
+    }
+    .rabbit .ear.left{ left:6px; transform:rotate(-14deg); }
+    .rabbit .ear.right{ right:6px; transform:rotate(12deg); }
+
+    .rabbit .head{
+      position:absolute;
+      top:6px;
+      left:50%;
+      transform:translateX(-50%);
+      width:68px;
+      height:68px;
+      background:#ff7fb3;
+      border-radius:50%;
+      box-shadow:0 8px 18px rgba(0,0,0,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .rabbit .face{
+      color:white;
+      font-weight:700;
+      font-size:14px;
+      user-select:none;
+    }
+
+    .bubble{
+      position:absolute;
+      left:-160px;
+      bottom:64px;
+      background:linear-gradient(180deg,#fffdf8,#ffffff);
+      color:#222;
+      padding:.45rem .65rem;
+      border-radius:10px;
+      box-shadow:0 8px 22px rgba(2,6,23,0.08);
+      border:1px solid rgba(2,6,23,0.04);
+      opacity:0;
+      transform:translateY(6px) scale(.98);
+      transition:opacity .18s ease,transform .18s ease;
+      pointer-events:auto;
+      width:150px;
+      font-weight:700;
+      font-size:.9rem;
+    }
+    .bubble.visible{ opacity:1; transform:none; }
+    .bubble::after{
+      content:"";
+      position:absolute;
+      right:14px;
+      bottom:-8px;
+      width:0;height:0;
+      border-left:8px solid transparent;
+      border-right:8px solid transparent;
+      border-top:8px solid #fff;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,0.06));
+    }
+
+    @keyframes floaty{
+      0%{ transform: translateY(0) rotate(-1deg) }
+      50%{ transform: translateY(-10px) rotate(1deg) }
+      100%{ transform: translateY(0) rotate(-1deg) }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #greeting{transition:none}
+      .rabbit .sprite{ animation:none }
+      .corner-link{
+        position:fixed;
+        top:0.6rem;
+        left:0.6rem;
+        z-index:90;
+        background:rgba(255,255,255,0.98);
+        color:var(--accent-2);
+        padding:.4rem .7rem;
+        border-radius:8px;
+        font-weight:700;
+        text-decoration:none;
+        box-shadow:0 8px 20px rgba(2,6,23,0.06);
+        border:1px solid rgba(15,23,42,0.04);
+        transition:transform .12s ease,opacity .12s ease;
+        pointer-events:auto;
+      }
+      .corner-link:active{ transform:translateY(1px) }
+      @media (max-width:420px){ .corner-link{ padding:.3rem .5rem; font-size:.9rem } }
+    }
   </style>
 </head>
 <body>
   <a href="paginaoculta.html" class="corner-link" aria-label="Ir a la página oculta">Pincha aqui o no</a>
+
   <main class="card" aria-labelledby="title">
     <header>
       <div class="logo" aria-hidden="true">Hi</div>
@@ -271,12 +282,11 @@
     </div>
   </main>
 
-  <!-- Enlace al CV (About me) -->
   <div style="text-align:center;margin-top:12px">
     <a href="cv.html" class="about-link" aria-label="About me — CV de Leandro Gado">About me</a>
   </div>
 
-  <!-- Añadido: sprite del conejo flotante -->
+  <!-- Conejo flotante estilo "Alicia" -->
   <div id="rabbit" class="rabbit" aria-hidden="false" aria-live="polite">
     <div class="sprite" aria-hidden="true">
       <div class="ear left"></div>
@@ -291,7 +301,7 @@
     const resetBtn = document.getElementById('resetBtn');
     const out = document.getElementById('greeting');
     const counterEl = document.getElementById('counter');
-    const rabbit = document.getElementById('rabbit'); // añadido: referencia al conejo
+    const rabbit = document.getElementById('rabbit');
 
     let count = 0;
 
@@ -305,21 +315,17 @@
       out.textContent = count === 1 ? '¡Hola, mundo! — Hello, world! (1 vez)' : `¡Hola, mundo! — Hello, world! (${count} veces)`;
       out.classList.add('visible');
 
-      // Pequeña animación "pulse" usando transform temporal
       out.animate([{ transform: 'translateY(-4px) scale(1.02)' }, { transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.9,.3,1)' });
 
-      // Cambia color cuando llegue a 10
       if (count === 10) {
         rabbit.classList.add('color-change');
       }
 
-      // Pausar el conejo un momento y mostrar mensaje alternativo
       if (window.pauseRabbitForClick) pauseRabbitForClick();
     }
 
     btn.addEventListener('click', showGreeting);
 
-    // Soporta Enter/Space por accesibilidad; el botón ya lo maneja, pero añadimos teclado global opcional
     btn.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -333,20 +339,17 @@
       out.textContent = '';
       out.classList.remove('visible');
 
-      // Al reiniciar, girar el conejo 90 grados y quitar el cambio de color
       rabbit.classList.remove('color-change');
       rabbit.classList.add('rotated');
-      // eliminar la clase rotated tras la animación
       setTimeout(() => rabbit.classList.remove('rotated'), 700);
 
       btn.focus();
     });
 
-    // Inicializar contador (por si quieres persistir en el futuro)
     updateCounter();
   </script>
+
   <script>
-    // Añadido: lógica del conejo parlante
     (function(){
       const rabbit = document.getElementById('rabbit');
       const bubbleText = rabbit.querySelector('.bubble-text');
@@ -362,7 +365,6 @@
       }
 
       function startRepeating(){
-        // decir "llego tarde" periódicamente
         if (intervalId) clearInterval(intervalId);
         speak('llego tarde', 1100);
         intervalId = setInterval(()=> {
@@ -371,7 +373,6 @@
       }
 
       function pauseAndSayOnce(msg = 'tu tambien llegas tarde', ms = 1400){
-        // pausa la animación y habla el mensaje una vez, luego reanuda
         if (intervalId) { clearInterval(intervalId); intervalId = null; }
         rabbit.classList.add('paused');
         speak(msg, ms - 100);
@@ -381,10 +382,8 @@
         }, ms);
       }
 
-      // Exponer función global para que showGreeting la invoque
       window.pauseRabbitForClick = () => pauseAndSayOnce('tu tambien llegas tarde', 1500);
 
-      // Iniciar ciclo si el usuario no ha solicitado reducir movimiento
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) startRepeating();
     })();
